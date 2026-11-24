@@ -1204,11 +1204,62 @@
       font-size: 0.9rem;
     }
 
+    /* Migration & Events Sections (v2.16.0) */
+    .migration-grid,
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .guide-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+    }
+
+    .guide-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .guide-card h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-bright);
+    }
+
+    .guide-card p {
+      margin: 0 0 12px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .guide-card pre {
+      margin: 0;
+      padding: 12px 14px;
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-muted);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      overflow-x: auto;
+      color: var(--text-primary);
+    }
+
     /* Responsive Breakpoints */
     @media (max-width: 980px) {
       .hero-grid,
       .api-workspace,
-      .playground-grid {
+      .playground-grid,
+      .migration-grid,
+      .events-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1261,6 +1312,8 @@
         <a href="#/docs" data-route="/docs" class="is-active">Docs</a>
         <a href="#/api-reference" data-route="/api-reference">API Reference</a>
         <a href="#/changelog" data-route="/changelog">Changelog</a>
+        <a href="#/migration" data-route="/migration">Migration</a>
+        <a href="#/events" data-route="/events">Events</a>
         <a href="#/status" data-route="/status" class="nav-status">
           <span class="status-dot" aria-hidden="true"></span>
           <span>Status</span>
@@ -1288,7 +1341,7 @@
     <section id="docs" class="hero" aria-labelledby="docs-heading">
       <div class="container hero-grid">
         <div>
-          <span class="eyebrow">REST API · v2.14.0 · Interactive Sandbox</span>
+          <span class="eyebrow">REST API · v2.16.0 · Interactive Sandbox</span>
           <h1 id="docs-heading">Build &amp; test payment flows with the NovaPay API</h1>
           <p>
             Browse endpoints by resource <strong>tags</strong> or URL <strong>routes</strong>, inspect schemas,
@@ -1297,8 +1350,8 @@
 
           <div class="hero-cta-row">
             <button type="button" class="btn-primary" id="btn-quickstart-try">Try POST /v2/payments/create</button>
-            <a href="#/api-reference/tag/checkout" class="btn-ghost" data-tag-jump="Checkout">Explore Checkout Tag</a>
-            <a href="#/changelog" class="btn-ghost" data-route="/changelog">View v2.14.0 Release</a>
+            <a href="#/api-reference/tag/disputes" class="btn-ghost" data-tag-jump="Disputes">Explore Disputes Tag</a>
+            <a href="#/changelog" class="btn-ghost" data-route="/changelog">View v2.16.0 Release</a>
           </div>
 
           <div class="meta-cards">
@@ -1356,20 +1409,22 @@ curl https://api.novapay.dev/v2/payments/create \
             <h2 id="api-ref-heading">API Reference</h2>
             <p>Filter endpoints by resource <strong>tag</strong> or click any <strong>route</strong> to run interactive tests below.</p>
           </div>
-          <span id="endpoint-count-pill" class="pill-summary">10 of 10 endpoints</span>
+          <span id="endpoint-count-pill" class="pill-summary">15 of 15 endpoints</span>
         </div>
 
         <!-- Tag Filter + Search -->
         <div class="filter-toolbar">
           <div id="api-tag-list" class="tag-list" role="tablist" aria-label="Filter endpoints by resource tag">
-            <button type="button" class="tag-btn is-active" data-tag="all">All Tags <span class="tag-count">10</span></button>
+            <button type="button" class="tag-btn is-active" data-tag="all">All Tags <span class="tag-count">15</span></button>
             <button type="button" class="tag-btn" data-tag="Payments">Payments <span class="tag-count">2</span></button>
-            <button type="button" class="tag-btn" data-tag="Refunds">Refunds <span class="tag-count">1</span></button>
+            <button type="button" class="tag-btn" data-tag="Refunds">Refunds <span class="tag-count">2</span></button>
             <button type="button" class="tag-btn" data-tag="Customers">Customers <span class="tag-count">2</span></button>
             <button type="button" class="tag-btn" data-tag="Subscriptions">Subscriptions <span class="tag-count">2</span></button>
-            <button type="button" class="tag-btn" data-tag="Webhooks">Webhooks <span class="tag-count">1</span></button>
+            <button type="button" class="tag-btn" data-tag="Webhooks">Webhooks <span class="tag-count">2</span></button>
             <button type="button" class="tag-btn" data-tag="Checkout">Checkout <span class="tag-count">1</span></button>
             <button type="button" class="tag-btn" data-tag="Balance">Balance <span class="tag-count">1</span></button>
+            <button type="button" class="tag-btn" data-tag="Disputes">Disputes <span class="tag-count">2</span></button>
+            <button type="button" class="tag-btn" data-tag="Payment Links">Payment Links <span class="tag-count">1</span></button>
           </div>
 
           <div class="search-box">
@@ -1422,7 +1477,14 @@ curl https://api.novapay.dev/v2/payments/create \
                       <td><span class="method-badge method-post">POST</span></td>
                       <td><code class="endpoint-path">/v2/refunds/create</code></td>
                       <td><span class="resource-tag">Refunds</span></td>
-                      <td>Create a refund</td>
+                      <td>Create a refund <span class="change-badge badge-deprecation" style="margin-left:6px;padding:1px 7px;font-size:0.7rem;">Deprecated</span></td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-refunds-initiate" data-tag="Refunds" data-method="POST" data-path="/v2/refunds/initiate">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/refunds/initiate</code></td>
+                      <td><span class="resource-tag">Refunds</span></td>
+                      <td>Initiate a partial or full refund</td>
                       <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
                     </tr>
                     <tr data-key="get-customers-list" data-tag="Customers" data-method="GET" data-path="/v2/customers/list">
@@ -1472,6 +1534,34 @@ curl https://api.novapay.dev/v2/payments/create \
                       <td><code class="endpoint-path">/v2/balance</code></td>
                       <td><span class="resource-tag">Balance</span></td>
                       <td>Retrieve account balance</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="get-disputes-list" data-tag="Disputes" data-method="GET" data-path="/v2/disputes/list">
+                      <td><span class="method-badge method-get">GET</span></td>
+                      <td><code class="endpoint-path">/v2/disputes/list</code></td>
+                      <td><span class="resource-tag">Disputes</span></td>
+                      <td>List open disputes &amp; chargebacks</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-disputes-evidence" data-tag="Disputes" data-method="POST" data-path="/v2/disputes/{id}/evidence">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/disputes/{id}/evidence</code></td>
+                      <td><span class="resource-tag">Disputes</span></td>
+                      <td>Submit dispute evidence</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-payment-links-create" data-tag="Payment Links" data-method="POST" data-path="/v2/payment-links/create">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/payment-links/create</code></td>
+                      <td><span class="resource-tag">Payment Links</span></td>
+                      <td>Create a shareable payment link</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-webhooks-verify" data-tag="Webhooks" data-method="POST" data-path="/v2/webhooks/verify">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/webhooks/verify</code></td>
+                      <td><span class="resource-tag">Webhooks</span></td>
+                      <td>Verify webhook HMAC signature</td>
                       <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
                     </tr>
                   </tbody>
@@ -1581,12 +1671,12 @@ curl https://api.novapay.dev/v2/payments/create \
             <h2 id="changelog-heading">Changelog</h2>
             <p>Chronological record of API releases, schema updates, deprecations, and breaking changes.</p>
           </div>
-          <span class="pill-summary">Latest release: v2.15.0</span>
+          <span class="pill-summary">Latest release: v2.16.0</span>
         </div>
 
         <div class="filter-toolbar">
           <div id="changelog-tag-list" class="badge-legend" role="tablist" aria-label="Filter changelog by change type">
-            <button type="button" class="tag-btn is-active" data-cl-tag="all">All Changes <span class="tag-count">4</span></button>
+            <button type="button" class="tag-btn is-active" data-cl-tag="all">All Changes <span class="tag-count">6</span></button>
             <button type="button" class="tag-btn" data-cl-tag="breaking"><span class="change-badge badge-breaking">Breaking Change 🔴</span></button>
             <button type="button" class="tag-btn" data-cl-tag="deprecation"><span class="change-badge badge-deprecation">Deprecation ⚠️</span></button>
             <button type="button" class="tag-btn" data-cl-tag="new"><span class="change-badge badge-new">New ✅</span></button>
@@ -1595,6 +1685,49 @@ curl https://api.novapay.dev/v2/payments/create \
         </div>
 
         <div class="changelog-timeline">
+          <article class="changelog-entry" id="2026-11-28" data-cl-type="new">
+            <div class="entry-meta">
+              <div class="entry-date-version changelog-date">
+                <time class="entry-date" datetime="2026-11-28">November 28, 2026</time>
+                <span class="entry-version changelog-version">v2.16.0</span>
+                <span class="change-badge badge badge-new">New ✅</span>
+              </div>
+              <a class="entry-anchor" href="#2026-11-28">#2026-11-28</a>
+            </div>
+            <h3 class="entry-title">Partial Refunds, Disputes API &amp; Payment Links</h3>
+            <p class="entry-body">
+              Added <code>POST /v2/refunds/initiate</code> (supporting partial refunds and rich error payloads),
+              <code>GET /v2/disputes/list</code>, <code>POST /v2/disputes/{id}/evidence</code>, and
+              <code>POST /v2/payment-links/create</code>. Published new <a href="#/migration">Migration Guide</a>
+              and <a href="#/events">Webhook Events</a> documentation sections.
+            </p>
+            <div class="entry-details">
+              <span>New tags: <code>Disputes</code>, <code>Payment Links</code> · Sections: <code>#migration</code>, <code>#events</code></span>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-refunds-initiate">Test /v2/refunds/initiate</button>
+            </div>
+          </article>
+
+          <article class="changelog-entry" id="2026-11-26" data-cl-type="breaking">
+            <div class="entry-meta">
+              <div class="entry-date-version changelog-date">
+                <time class="entry-date" datetime="2026-11-26">November 26, 2026</time>
+                <span class="entry-version changelog-version">v2.15.5</span>
+                <span class="change-badge badge badge-breaking">Breaking Change 🔴</span>
+              </div>
+              <a class="entry-anchor" href="#2026-11-26">#2026-11-26</a>
+            </div>
+            <h3 class="entry-title">Mandatory Webhook Signature v2 Verification</h3>
+            <p class="entry-body">
+              All outbound webhooks now enforce HMAC-SHA256 verification via the <code>NovaPay-Signature-v2</code>
+              header. Legacy unsigned callbacks are rejected. Use <code>POST /v2/webhooks/verify</code> to validate
+              signatures in the sandbox and review the <a href="#/migration">Migration Guide</a>.
+            </p>
+            <div class="entry-details">
+              <span>Required header: <code>NovaPay-Signature-v2: t=...,v2=...</code></span>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-webhooks-verify">Test Signature Verify</button>
+            </div>
+          </article>
+
           <article class="changelog-entry" id="2026-11-24" data-cl-type="deprecation">
             <div class="entry-meta">
               <div class="entry-date-version changelog-date">
@@ -1680,6 +1813,106 @@ curl https://api.novapay.dev/v2/payments/create \
       </div>
     </section>
 
+    <!-- Migration Guide (Added in v2.16.0) -->
+    <section id="migration" class="portal-section" aria-labelledby="migration-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 id="migration-heading">Migration Guide</h2>
+            <p>Upgrade steps for <code>v2.15.x &rarr; v2.16.0</code> covering deprecated refund routes and v2 webhook signatures.</p>
+          </div>
+          <span class="pill-summary">Target release: v2.16.0</span>
+        </div>
+
+        <div class="migration-grid">
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <h3>1. Migrate Refunds to <code>POST /v2/refunds/initiate</code></h3>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-refunds-initiate">Try New Endpoint</button>
+            </div>
+            <p>
+              Replace deprecated <code>POST /v2/refunds/create</code> before March 1, 2027. The new route supports
+              partial captures, structured <code>metadata</code>, and idempotent retries.
+            </p>
+            <pre><code>// Before (deprecated v2.15)
+POST /v2/refunds/create
+{ "payment_id": "pay_01J9XMP8Q4", "amount": 1500 }
+
+// After (v2.16.0+)
+POST /v2/refunds/initiate
+{
+  "payment_id": "pay_01J9XMP8Q4",
+  "amount": 1500,
+  "partial": true,
+  "reason": "partial_return",
+  "metadata": { "rma": "RMA-2091" }
+}</code></pre>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <h3>2. Enforce <code>NovaPay-Signature-v2</code> Webhooks</h3>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-webhooks-verify">Test Signature Verify</button>
+            </div>
+            <p>
+              Starting in <code>v2.15.5</code>, verify the HMAC-SHA256 signature header on incoming webhook payloads
+              to prevent replay attacks and reject unverified deliveries.
+            </p>
+            <pre><code>NovaPay-Signature-v2: t=1795543200,v2=8f4c19a2d0e7b6c4
+
+POST /v2/webhooks/verify
+{
+  "header": "t=1795543200,v2=8f4c19a2d0e7b6c4",
+  "secret": "whsec_test_91a8c2",
+  "payload": "{\"event\":\"refund.initiated\"}"
+}</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Webhook Events & Error Codes (Added in v2.16.0) -->
+    <section id="events" class="portal-section" aria-labelledby="events-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 id="events-heading">Webhook Events &amp; Error Codes</h2>
+            <p>Event schemas and error responses introduced alongside the Disputes, Refunds v2, and Payment Links APIs.</p>
+          </div>
+          <span class="pill-summary">4 new event types</span>
+        </div>
+
+        <div class="events-grid">
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <h3><code>refund.initiated</code> &amp; <code>payment_link.completed</code></h3>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-payment-links-create">Test Payment Link</button>
+            </div>
+            <p>Emitted asynchronously when a partial refund starts or a hosted payment link settles.</p>
+            <pre><code>{
+  "id": "evt_01J9EVT402",
+  "type": "refund.initiated",
+  "api_version": "2026-11-28",
+  "data": { "refund_id": "ref_01J9REF101", "partial": true }
+}</code></pre>
+          </article>
+
+          <article class="guide-card">
+            <div class="guide-card-header">
+              <h3><code>dispute.created</code> &amp; <code>dispute.evidence_submitted</code></h3>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-disputes-evidence">Test Dispute Evidence</button>
+            </div>
+            <p>Track chargeback lifecycle updates and automated evidence submission confirmations.</p>
+            <pre><code>{
+  "id": "evt_01J9EVT488",
+  "type": "dispute.evidence_submitted",
+  "data": { "dispute_id": "dsp_01J9DISP01", "status": "under_review" }
+}</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- Status -->
     <section id="status" class="portal-section" aria-labelledby="status-heading">
       <div class="container">
@@ -1727,11 +1960,13 @@ curl https://api.novapay.dev/v2/payments/create \
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>&copy; 2026 NovaPay Inc. &mdash; API v2.14.0</span>
+      <span>&copy; 2026 NovaPay Inc. &mdash; API v2.16.0</span>
       <div class="footer-links">
         <a href="#/docs" data-route="/docs">Docs</a>
         <a href="#/api-reference" data-route="/api-reference">API Reference</a>
         <a href="#/changelog" data-route="/changelog">Changelog</a>
+        <a href="#/migration" data-route="/migration">Migration</a>
+        <a href="#/events" data-route="/events">Events</a>
         <a href="#/status" data-route="/status">Status</a>
       </div>
     </div>
@@ -1771,13 +2006,29 @@ curl https://api.novapay.dev/v2/payments/create \
           method: "POST",
           path: "/v2/refunds/create",
           tag: "Refunds",
-          description: "Create a refund",
+          description: "Create a refund (Deprecated)",
           rateLimit: "60/min",
           hasBody: true,
           defaultBody: {
             payment_id: "pay_01J9XMP8Q4",
             amount: 1500,
             reason: "requested_by_customer"
+          }
+        },
+        {
+          key: "post-refunds-initiate",
+          method: "POST",
+          path: "/v2/refunds/initiate",
+          tag: "Refunds",
+          description: "Initiate a partial or full refund",
+          rateLimit: "120/min",
+          hasBody: true,
+          defaultBody: {
+            payment_id: "pay_01J9XMP8Q4",
+            amount: 1500,
+            partial: true,
+            reason: "partial_return",
+            metadata: { rma: "RMA-2091" }
           }
         },
         {
@@ -1866,6 +2117,61 @@ curl https://api.novapay.dev/v2/payments/create \
           description: "Retrieve account balance",
           rateLimit: "120/min",
           hasBody: false
+        },
+        {
+          key: "get-disputes-list",
+          method: "GET",
+          path: "/v2/disputes/list",
+          tag: "Disputes",
+          description: "List open disputes & chargebacks",
+          rateLimit: "120/min",
+          hasBody: false,
+          queryParamName: "status",
+          queryParamDefault: "needs_response"
+        },
+        {
+          key: "post-disputes-evidence",
+          method: "POST",
+          path: "/v2/disputes/{id}/evidence",
+          tag: "Disputes",
+          description: "Submit dispute evidence",
+          rateLimit: "60/min",
+          hasBody: true,
+          pathParamDefault: "dsp_01J9DISP01",
+          defaultBody: {
+            tracking_number: "1Z999AA10123456784",
+            carrier: "UPS",
+            customer_signature_url: "https://cdn.merchant.io/proof/sig_91.pdf"
+          }
+        },
+        {
+          key: "post-payment-links-create",
+          method: "POST",
+          path: "/v2/payment-links/create",
+          tag: "Payment Links",
+          description: "Create a shareable payment link",
+          rateLimit: "100/min",
+          hasBody: true,
+          defaultBody: {
+            title: "Enterprise Onboarding Fee",
+            amount: 19900,
+            currency: "USD",
+            allow_promotion_codes: true
+          }
+        },
+        {
+          key: "post-webhooks-verify",
+          method: "POST",
+          path: "/v2/webhooks/verify",
+          tag: "Webhooks",
+          description: "Verify webhook HMAC signature",
+          rateLimit: "300/min",
+          hasBody: true,
+          defaultBody: {
+            header: "t=1795543200,v2=8f4c19a2d0e7b6c4",
+            secret: "whsec_test_91a8c2",
+            payload: "{\"event\":\"refund.initiated\"}"
+          }
         }
       ];
 
@@ -1929,6 +2235,20 @@ curl https://api.novapay.dev/v2/payments/create \
           ],
           refunds: {},
           checkoutSessions: {},
+          paymentLinks: {},
+          disputes: {
+            dsp_01J9DISP01: {
+              id: "dsp_01J9DISP01",
+              object: "dispute",
+              payment_id: "pay_01J9XMP8Q4",
+              amount: 4900,
+              currency: "USD",
+              reason: "product_not_received",
+              status: "needs_response",
+              evidence_submitted: false,
+              due_by: "2026-12-08T23:59:59Z"
+            }
+          },
           balance: {
             available_balance: 184500,
             pending_balance: 12900,
@@ -2362,6 +2682,126 @@ curl https://api.novapay.dev/v2/payments/create \
                 };
                 break;
               }
+              case "post-refunds-initiate": {
+                const pay = sandbox.payments[bodyObj.payment_id];
+                if (!pay) {
+                  status = 404;
+                  statusText = "Not Found";
+                  payload = { error: { type: "invalid_request_error", code: "resource_missing", message: `No such payment: '${bodyObj.payment_id}'` } };
+                  break;
+                }
+                const refAmt = Number(bodyObj.amount || pay.amount);
+                if (refAmt <= 0 || pay.refunded_amount + refAmt > pay.amount) {
+                  status = 400;
+                  statusText = "Bad Request";
+                  payload = { error: { type: "invalid_request_error", code: "charge_already_refunded", message: "Refund amount exceeds remaining payment balance." } };
+                  break;
+                }
+                idSeq++;
+                const refId = `ref_01J9INIT${idSeq}`;
+                pay.refunded_amount += refAmt;
+                sandbox.balance.available_balance = Math.max(0, sandbox.balance.available_balance - refAmt);
+                const refObj = {
+                  id: refId,
+                  object: "refund",
+                  payment_id: pay.id,
+                  amount: refAmt,
+                  remaining_refundable: pay.amount - pay.refunded_amount,
+                  partial: Boolean(bodyObj.partial ?? (refAmt < pay.amount)),
+                  currency: pay.currency,
+                  reason: bodyObj.reason || "partial_return",
+                  metadata: bodyObj.metadata || {},
+                  status: "initiated",
+                  created_at: new Date().toISOString()
+                };
+                sandbox.refunds[refId] = refObj;
+                status = 201;
+                statusText = "Created";
+                payload = refObj;
+                break;
+              }
+              case "get-disputes-list": {
+                const all = Object.values(sandbox.disputes);
+                const filtered = queryVal && queryVal !== "all"
+                  ? all.filter((d) => d.status === queryVal)
+                  : all;
+                payload = {
+                  object: "list",
+                  data: filtered,
+                  total_count: filtered.length
+                };
+                break;
+              }
+              case "post-disputes-evidence": {
+                const dsp = sandbox.disputes[pathId];
+                if (!dsp) {
+                  status = 404;
+                  statusText = "Not Found";
+                  payload = { error: { type: "invalid_request_error", code: "resource_missing", message: `No such dispute: '${pathId}'` } };
+                  break;
+                }
+                dsp.status = "under_review";
+                dsp.evidence_submitted = true;
+                dsp.evidence = {
+                  tracking_number: bodyObj.tracking_number || null,
+                  carrier: bodyObj.carrier || null,
+                  customer_signature_url: bodyObj.customer_signature_url || null
+                };
+                dsp.updated_at = new Date().toISOString();
+                payload = dsp;
+                break;
+              }
+              case "post-payment-links-create": {
+                const amt = Number(bodyObj.amount);
+                if (!Number.isInteger(amt) || amt <= 0) {
+                  status = 400;
+                  statusText = "Bad Request";
+                  payload = { error: { type: "invalid_request_error", code: "invalid_amount", message: "amount must be a positive integer in minor units." } };
+                  break;
+                }
+                idSeq++;
+                const plId = `pl_01J9LINK${idSeq}`;
+                const link = {
+                  id: plId,
+                  object: "payment_link",
+                  title: bodyObj.title || "NovaPay Payment Link",
+                  amount: amt,
+                  currency: (bodyObj.currency || "USD").toUpperCase(),
+                  allow_promotion_codes: Boolean(bodyObj.allow_promotion_codes),
+                  url: `https://pay.novapay.dev/l/${plId}`,
+                  active: true,
+                  created_at: new Date().toISOString()
+                };
+                sandbox.paymentLinks[plId] = link;
+                status = 201;
+                statusText = "Created";
+                payload = link;
+                break;
+              }
+              case "post-webhooks-verify": {
+                const hdr = String(bodyObj.header || "");
+                const validFormat = /t=\d+,v2=[a-f0-9]{8,}/i.test(hdr) && String(bodyObj.secret || "").startsWith("whsec_");
+                if (!validFormat) {
+                  status = 400;
+                  statusText = "Bad Request";
+                  payload = {
+                    verified: false,
+                    error: {
+                      type: "signature_verification_error",
+                      code: "invalid_signature_v2",
+                      message: "Invalid NovaPay-Signature-v2 header or webhook signing secret."
+                    }
+                  };
+                } else {
+                  payload = {
+                    verified: true,
+                    algorithm: "HMAC-SHA256",
+                    header_version: "v2",
+                    verified_at: new Date().toISOString()
+                  };
+                }
+                break;
+              }
             }
           }
         }
@@ -2417,6 +2857,8 @@ curl https://api.novapay.dev/v2/payments/create \
         let navTarget = "/docs";
         if (hashValue.startsWith("#/api-reference") || hashValue.startsWith("#/endpoint")) navTarget = "/api-reference";
         else if (hashValue.startsWith("#/changelog")) navTarget = "/changelog";
+        else if (hashValue.startsWith("#/migration")) navTarget = "/migration";
+        else if (hashValue.startsWith("#/events")) navTarget = "/events";
         else if (hashValue.startsWith("#/status")) navTarget = "/status";
 
         els.navLinks.forEach((a) => {
@@ -2454,6 +2896,10 @@ curl https://api.novapay.dev/v2/payments/create \
             setChangelogTag("all", false);
           }
           document.getElementById("changelog").scrollIntoView({ behavior: "smooth" });
+        } else if (root === "migration") {
+          document.getElementById("migration").scrollIntoView({ behavior: "smooth" });
+        } else if (root === "events") {
+          document.getElementById("events").scrollIntoView({ behavior: "smooth" });
         } else if (root === "status") {
           document.getElementById("status").scrollIntoView({ behavior: "smooth" });
         }
