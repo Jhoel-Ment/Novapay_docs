@@ -1581,12 +1581,12 @@ curl https://api.novapay.dev/v2/payments/create \
             <h2 id="changelog-heading">Changelog</h2>
             <p>Chronological record of API releases, schema updates, deprecations, and breaking changes.</p>
           </div>
-          <span class="pill-summary">Latest release: v2.14.0</span>
+          <span class="pill-summary">Latest release: v2.15.0</span>
         </div>
 
         <div class="filter-toolbar">
           <div id="changelog-tag-list" class="badge-legend" role="tablist" aria-label="Filter changelog by change type">
-            <button type="button" class="tag-btn is-active" data-cl-tag="all">All Changes <span class="tag-count">3</span></button>
+            <button type="button" class="tag-btn is-active" data-cl-tag="all">All Changes <span class="tag-count">4</span></button>
             <button type="button" class="tag-btn" data-cl-tag="breaking"><span class="change-badge badge-breaking">Breaking Change 🔴</span></button>
             <button type="button" class="tag-btn" data-cl-tag="deprecation"><span class="change-badge badge-deprecation">Deprecation ⚠️</span></button>
             <button type="button" class="tag-btn" data-cl-tag="new"><span class="change-badge badge-new">New ✅</span></button>
@@ -1595,6 +1595,28 @@ curl https://api.novapay.dev/v2/payments/create \
         </div>
 
         <div class="changelog-timeline">
+          <article class="changelog-entry" id="2026-11-24" data-cl-type="deprecation">
+            <div class="entry-meta">
+              <div class="entry-date-version changelog-date">
+                <time class="entry-date" datetime="2026-11-24">November 24, 2026</time>
+                <span class="entry-version changelog-version">v2.15.0</span>
+                <span class="change-badge badge badge-deprecation">⚠️ Deprecation</span>
+              </div>
+              <a class="entry-anchor" href="#2026-11-24">#2026-11-24</a>
+            </div>
+            <h3 class="entry-title">POST /v2/refunds/create deprecated</h3>
+            <p class="entry-body">
+              The <code>POST /v2/refunds/create</code> endpoint is now <strong>deprecated</strong>
+              and will be removed on March 1, 2027. Please migrate to
+              <code>POST /v2/refunds/initiate</code> which supports partial refunds
+              and improved error handling.
+            </p>
+            <div class="entry-details">
+              <span>Sunset date: <code>2027-03-01</code> · Replacement: <code>POST /v2/refunds/initiate</code></span>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-refunds-create">Test Legacy Endpoint</button>
+            </div>
+          </article>
+
           <article id="2026-11-20" class="changelog-entry" data-cl-type="new">
             <div class="entry-meta">
               <div class="entry-date-version">
