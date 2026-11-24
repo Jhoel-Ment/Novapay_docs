@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaPay Developer Portal — API Reference, Changelog &amp; Sandbox</title>
+  <style>
+    :root {
+      --bg-canvas: #0d1117;
+      --bg-surface: #161b22;
+      --bg-elevated: #1c2128;
+      --bg-code: #090d13;
+      --border-default: #30363d;
+      --border-muted: #21262d;
+      --text-primary: #c9d1d9;
+      --text-bright: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-hover: #79c0ff;
+      --accent-subtle: rgba(88, 166, 255, 0.12);
+
+      /* HTTP Methods */
+      --method-get-bg: rgba(46, 160, 67, 0.15);
+      --method-get-fg: #3fb950;
+      --method-get-border: rgba(63, 185, 80, 0.35);
+
+      --method-post-bg: rgba(88, 166, 255, 0.15);
+      --method-post-fg: #58a6ff;
+      --method-post-border: rgba(88, 166, 255, 0.35);
+
+      --method-put-bg: rgba(210, 153, 34, 0.16);
+      --method-put-fg: #d29922;
+      --method-put-border: rgba(210, 153, 34, 0.38);
+
+      --method-delete-bg: rgba(248, 81, 73, 0.15);
+      --method-delete-fg: #f85149;
+      --method-delete-border: rgba(248, 81, 73, 0.35);
+
+      /* Changelog Badges */
+      --badge-new-bg: rgba(46, 160, 67, 0.14);
+      --badge-new-fg: #3fb950;
+      --badge-new-border: rgba(63, 185, 80, 0.35);
+
+      --badge-update-bg: rgba(88, 166, 255, 0.14);
+      --badge-update-fg: #58a6ff;
+      --badge-update-border: rgba(88, 166, 255, 0.35);
+
+      --badge-deprecation-bg: rgba(210, 153, 34, 0.14);
+      --badge-deprecation-fg: #e3b341;
+      --badge-deprecation-border: rgba(227, 179, 65, 0.35);
+
+      --badge-breaking-bg: rgba(248, 81, 73, 0.14);
+      --badge-breaking-fg: #f85149;
+      --badge-breaking-border: rgba(248, 81, 73, 0.35);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 12px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 108px;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      background-color: rgba(110, 118, 129, 0.18);
+      color: var(--text-bright);
+      padding: 0.16em 0.44em;
+      border-radius: 5px;
+      border: 1px solid var(--border-muted);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header & Route Bar */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(13, 17, 23, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 62px;
+      flex-wrap: wrap;
+      padding: 8px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-bright);
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .brand:hover {
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #58a6ff 0%, #1f6feb 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14) inset;
+    }
+
+    .brand-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      background-color: var(--accent-subtle);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .main-nav a {
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .main-nav a:hover {
+      background-color: var(--bg-surface);
+      color: var(--text-bright);
+      text-decoration: none;
+    }
+
+    .main-nav a.is-active {
+      background-color: var(--accent-subtle);
+      color: var(--accent);
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+
+    .nav-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #3fb950;
+      box-shadow: 0 0 8px rgba(63, 185, 80, 0.65);
+    }
+
+    /* Route Subbar */
+    .route-bar {
+      background-color: var(--bg-surface);
+      border-top: 1px solid var(--border-muted);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .route-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 38px;
+      padding: 5px 0;
+      flex-wrap: wrap;
+    }
+
+    .route-breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+    }
+
+    .route-pill {
+      color: var(--accent);
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-default);
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+
+    .route-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--text-bright);
+      background-color: var(--bg-elevated);
+    }
+
+    .btn-primary {
+      background-color: #1f6feb;
+      color: #ffffff;
+      border: 1px solid rgba(240, 246, 252, 0.14);
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background-color 0.15s ease, transform 0.08s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #388bfd;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 0.78rem;
+    }
+
+    /* Hero / Docs */
+    .hero {
+      padding: 40px 0 36px;
+      border-bottom: 1px solid var(--border-muted);
+      background: radial-gradient(circle at 15% 0%, rgba(88, 166, 255, 0.09), transparent 50%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--accent);
+      background-color: var(--accent-subtle);
+      border: 1px solid rgba(88, 166, 255, 0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.75rem, 2.8vw, 2.35rem);
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      color: var(--text-bright);
+    }
+
+    .hero p {
+      margin: 0 0 20px;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      max-width: 62ch;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .meta-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .meta-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 10px 13px;
+    }
+
+    .meta-label {
+      display: block;
+      font-size: 0.71rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .meta-value {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-bright);
+      word-break: break-all;
+    }
+
+    .code-panel {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .code-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      background-color: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-default);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .code-dots {
+      display: inline-flex;
+      gap: 6px;
+    }
+
+    .code-dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background-color: var(--border-default);
+    }
+
+    .code-panel pre {
+      margin: 0;
+      padding: 14px 16px;
+      background-color: var(--bg-code);
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--text-primary);
+    }
+
+    .tok-str { color: #a5d6ff; }
+    .tok-key { color: #79c0ff; }
+    .tok-num { color: #79c0ff; }
+    .tok-comment { color: #8b949e; }
+
+    /* Sections */
+    .portal-section {
+      padding: 44px 0;
+      border-bottom: 1px solid var(--border-muted);
+    }
+
+    .portal-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      margin: 0 0 5px;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: var(--text-bright);
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.94rem;
+    }
+
+    .pill-summary {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      padding: 5px 11px;
+      border-radius: 999px;
+    }
+
+    /* Tag Toolbar & Search */
+    .filter-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .tag-list {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .tag-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .tag-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-bright);
+    }
+
+    .tag-btn.is-active {
+      background-color: var(--accent-subtle);
+      color: var(--accent);
+      border-color: rgba(88, 166, 255, 0.55);
+    }
+
+    .tag-count {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background-color: var(--bg-canvas);
+      padding: 1px 6px;
+      border-radius: 999px;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 240px;
+      flex: 0 1 280px;
+    }
+
+    .search-input {
+      width: 100%;
+      background-color: var(--bg-surface);
+      color: var(--text-bright);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      font-size: 0.86rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-subtle);
+    }
+
+    /* API Reference Workspace (Sidebar + Table + Interactive Tester) */
+    .api-workspace {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .route-sidebar {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      position: sticky;
+      top: 112px;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+    }
+
+    .sidebar-group {
+      margin-bottom: 14px;
+    }
+
+    .sidebar-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .sidebar-group-title {
+      font-size: 0.71rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin: 0 0 6px;
+      padding: 0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-route-link {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-primary);
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+
+    .sidebar-route-link:hover {
+      background-color: var(--bg-elevated);
+      color: var(--text-bright);
+    }
+
+    .sidebar-route-link.is-active {
+      background-color: var(--accent-subtle);
+      border-color: rgba(88, 166, 255, 0.35);
+      color: var(--text-bright);
+    }
+
+    .sidebar-route-path {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mini-method {
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* API Reference Table */
+    .table-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.api-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      min-width: 650px;
+    }
+
+    .api-table thead {
+      background-color: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .api-table th {
+      padding: 12px 16px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .api-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-muted);
+      vertical-align: middle;
+    }
+
+    .api-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .api-table tbody tr {
+      cursor: pointer;
+      transition: background-color 0.14s ease;
+    }
+
+    .api-table tbody tr:hover {
+      background-color: rgba(88, 166, 255, 0.06);
+    }
+
+    .api-table tbody tr.is-selected {
+      background-color: rgba(88, 166, 255, 0.1);
+    }
+
+    .api-table tbody tr.is-hidden {
+      display: none;
+    }
+
+    .method-badge {
+      display: inline-block;
+      min-width: 66px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+    }
+
+    .method-get {
+      background-color: var(--method-get-bg);
+      color: var(--method-get-fg);
+      border-color: var(--method-get-border);
+    }
+
+    .method-post {
+      background-color: var(--method-post-bg);
+      color: var(--method-post-fg);
+      border-color: var(--method-post-border);
+    }
+
+    .method-put {
+      background-color: var(--method-put-bg);
+      color: var(--method-put-fg);
+      border-color: var(--method-put-border);
+    }
+
+    .method-delete {
+      background-color: var(--method-delete-bg);
+      color: var(--method-delete-fg);
+      border-color: var(--method-delete-border);
+    }
+
+    .endpoint-path {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-default);
+      color: var(--text-bright);
+      padding: 3px 8px;
+      font-size: 0.83rem;
+      white-space: nowrap;
+    }
+
+    .resource-tag {
+      display: inline-block;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-muted);
+      padding: 2px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Interactive Playground */
+    .playground-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+    }
+
+    .playground-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px 18px;
+      background-color: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .playground-endpoint-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .playground-url {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--text-bright);
+      word-break: break-all;
+    }
+
+    .playground-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .playground-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .playground-pane {
+      padding: 18px;
+    }
+
+    .playground-pane:first-child {
+      border-right: 1px solid var(--border-default);
+    }
+
+    .pane-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .pane-heading h3 {
+      margin: 0;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-bright);
+    }
+
+    .scenario-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .scenario-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .field-input,
+    .field-textarea,
+    .field-select {
+      width: 100%;
+      background-color: var(--bg-code);
+      color: var(--text-bright);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      outline: none;
+    }
+
+    .field-input:focus,
+    .field-textarea:focus,
+    .field-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-subtle);
+    }
+
+    .field-textarea {
+      min-height: 160px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .params-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .response-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .http-status {
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+    }
+
+    .http-2xx {
+      background-color: var(--method-get-bg);
+      color: var(--method-get-fg);
+      border: 1px solid var(--method-get-border);
+    }
+
+    .http-4xx {
+      background-color: var(--method-delete-bg);
+      color: var(--method-delete-fg);
+      border: 1px solid var(--method-delete-border);
+    }
+
+    .response-pre {
+      margin: 0;
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--text-bright);
+      min-height: 220px;
+      max-height: 360px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .curl-box {
+      margin-top: 12px;
+      background-color: var(--bg-code);
+      border: 1px solid var(--border-muted);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .history-bar {
+      padding: 12px 18px;
+      background-color: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .history-items {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .history-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      color: var(--text-primary);
+      padding: 3px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .history-chip:hover {
+      border-color: var(--accent);
+    }
+
+    /* Changelog */
+    .badge-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .change-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .badge-breaking {
+      background-color: var(--badge-breaking-bg);
+      color: var(--badge-breaking-fg);
+      border-color: var(--badge-breaking-border);
+    }
+
+    .badge-deprecation {
+      background-color: var(--badge-deprecation-bg);
+      color: var(--badge-deprecation-fg);
+      border-color: var(--badge-deprecation-border);
+    }
+
+    .badge-new {
+      background-color: var(--badge-new-bg);
+      color: var(--badge-new-fg);
+      border-color: var(--badge-new-border);
+    }
+
+    .badge-update {
+      background-color: var(--badge-update-bg);
+      color: var(--badge-update-fg);
+      border-color: var(--badge-update-border);
+    }
+
+    .changelog-timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-left: 24px;
+      border-left: 2px solid var(--border-default);
+    }
+
+    .changelog-entry {
+      position: relative;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      transition: border-color 0.15s ease;
+    }
+
+    .changelog-entry.is-hidden {
+      display: none;
+    }
+
+    .changelog-entry:hover {
+      border-color: rgba(88, 166, 255, 0.45);
+    }
+
+    .changelog-entry::before {
+      content: "";
+      position: absolute;
+      left: -31px;
+      top: 23px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      border: 3px solid var(--bg-canvas);
+      box-shadow: 0 0 0 1px var(--border-default);
+    }
+
+    .changelog-entry:target {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-subtle);
+    }
+
+    .entry-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .entry-date-version {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .entry-date {
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .entry-version {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      background-color: var(--accent-subtle);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      padding: 2px 9px;
+      border-radius: var(--radius-sm);
+    }
+
+    .entry-title {
+      margin: 0 0 6px;
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text-bright);
+    }
+
+    .entry-body {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 0.94rem;
+    }
+
+    .entry-details {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-muted);
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Status Grid */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .status-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .status-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .status-name {
+      font-weight: 600;
+      color: var(--text-bright);
+      font-size: 0.92rem;
+    }
+
+    .status-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #3fb950;
+    }
+
+    .status-uptime {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border-default);
+      background-color: var(--bg-surface);
+      padding: 24px 0;
+      margin-top: 12px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .empty-state {
+      padding: 28px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 980px) {
+      .hero-grid,
+      .api-workspace,
+      .playground-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .route-sidebar {
+        position: static;
+        max-height: none;
+      }
+
+      .playground-pane:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--border-default);
+      }
+
+      .status-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 16px;
+      }
+
+      .meta-cards,
+      .params-grid,
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .changelog-timeline {
+        padding-left: 16px;
+      }
+
+      .changelog-entry::before {
+        left: -23px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#/docs" class="brand" data-route="/docs" aria-label="NovaPay Developer Portal Home">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>NovaPay</span>
+        <span class="brand-tag">Developers</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary navigation">
+        <a href="#/docs" data-route="/docs" class="is-active">Docs</a>
+        <a href="#/api-reference" data-route="/api-reference">API Reference</a>
+        <a href="#/changelog" data-route="/changelog">Changelog</a>
+        <a href="#/status" data-route="/status" class="nav-status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Status</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="route-bar">
+      <div class="container route-bar-inner">
+        <div class="route-breadcrumb">
+          <span>Route:</span>
+          <span id="current-route-display" class="route-pill">#/docs</span>
+          <span id="sandbox-mode-pill" class="pill-summary">Sandbox: In-Memory Mock</span>
+        </div>
+        <div class="route-actions">
+          <button type="button" class="btn-ghost" id="btn-jump-tester">Open API Tester</button>
+          <button type="button" class="btn-ghost" id="btn-reset-sandbox">Reset Sandbox Data</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Docs / Overview -->
+    <section id="docs" class="hero" aria-labelledby="docs-heading">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">REST API · v2.14.0 · Interactive Sandbox</span>
+          <h1 id="docs-heading">Build &amp; test payment flows with the NovaPay API</h1>
+          <p>
+            Browse endpoints by resource <strong>tags</strong> or URL <strong>routes</strong>, inspect schemas,
+            and execute live test requests directly in your browser against a stateful NovaPay mock sandbox.
+          </p>
+
+          <div class="hero-cta-row">
+            <button type="button" class="btn-primary" id="btn-quickstart-try">Try POST /v2/payments/create</button>
+            <a href="#/api-reference/tag/checkout" class="btn-ghost" data-tag-jump="Checkout">Explore Checkout Tag</a>
+            <a href="#/changelog" class="btn-ghost" data-route="/changelog">View v2.14.0 Release</a>
+          </div>
+
+          <div class="meta-cards">
+            <div class="meta-card">
+              <span class="meta-label">Base URL</span>
+              <span class="meta-value">https://api.novapay.dev</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Test API Key</span>
+              <span class="meta-value">np_test_9f8a7c2e41b0</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Content Type</span>
+              <span class="meta-value">application/json; charset=utf-8</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Idempotency</span>
+              <span class="meta-value">Idempotency-Key: &lt;uuid-v4&gt;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-panel" aria-label="Quickstart cURL example">
+          <div class="code-panel-header">
+            <span class="code-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span>POST /v2/payments/create</span>
+          </div>
+          <pre><code><span class="tok-comment"># Create a $49.00 USD payment</span>
+curl https://api.novapay.dev/v2/payments/create \
+  -H <span class="tok-str">"Authorization: Bearer np_test_9f8a7c2e41b0"</span> \
+  -H <span class="tok-str">"Content-Type: application/json"</span> \
+  -d <span class="tok-str">'{
+    "amount": 4900,
+    "currency": "USD",
+    "customer_id": "cus_01J9XK2M",
+    "capture": true
+  }'</span>
+
+<span class="tok-comment">// 201 Created</span>
+{
+  <span class="tok-key">"id"</span>: <span class="tok-str">"pay_01J9XMP8Q4"</span>,
+  <span class="tok-key">"status"</span>: <span class="tok-str">"succeeded"</span>,
+  <span class="tok-key">"amount"</span>: <span class="tok-num">4900</span>,
+  <span class="tok-key">"currency"</span>: <span class="tok-str">"USD"</span>
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Reference + Interactive Sandbox -->
+    <section id="api-reference" class="portal-section" aria-labelledby="api-ref-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 id="api-ref-heading">API Reference</h2>
+            <p>Filter endpoints by resource <strong>tag</strong> or click any <strong>route</strong> to run interactive tests below.</p>
+          </div>
+          <span id="endpoint-count-pill" class="pill-summary">10 of 10 endpoints</span>
+        </div>
+
+        <!-- Tag Filter + Search -->
+        <div class="filter-toolbar">
+          <div id="api-tag-list" class="tag-list" role="tablist" aria-label="Filter endpoints by resource tag">
+            <button type="button" class="tag-btn is-active" data-tag="all">All Tags <span class="tag-count">10</span></button>
+            <button type="button" class="tag-btn" data-tag="Payments">Payments <span class="tag-count">2</span></button>
+            <button type="button" class="tag-btn" data-tag="Refunds">Refunds <span class="tag-count">1</span></button>
+            <button type="button" class="tag-btn" data-tag="Customers">Customers <span class="tag-count">2</span></button>
+            <button type="button" class="tag-btn" data-tag="Subscriptions">Subscriptions <span class="tag-count">2</span></button>
+            <button type="button" class="tag-btn" data-tag="Webhooks">Webhooks <span class="tag-count">1</span></button>
+            <button type="button" class="tag-btn" data-tag="Checkout">Checkout <span class="tag-count">1</span></button>
+            <button type="button" class="tag-btn" data-tag="Balance">Balance <span class="tag-count">1</span></button>
+          </div>
+
+          <div class="search-box">
+            <input
+              id="endpoint-search"
+              class="search-input"
+              type="search"
+              placeholder="Filter routes (e.g. payments, DELETE, {id})..."
+              aria-label="Filter API routes"
+            />
+          </div>
+        </div>
+
+        <div class="api-workspace">
+          <!-- Sidebar grouped by Tag -->
+          <aside class="route-sidebar" aria-label="Endpoints grouped by tag">
+            <div id="sidebar-routes-container"></div>
+          </aside>
+
+          <div>
+            <!-- Registered Endpoints Table -->
+            <div class="table-card">
+              <div class="table-responsive">
+                <table class="api-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Method</th>
+                      <th scope="col">Endpoint</th>
+                      <th scope="col">Tag</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="endpoints-table-body">
+                    <tr data-key="post-payments-create" data-tag="Payments" data-method="POST" data-path="/v2/payments/create">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/payments/create</code></td>
+                      <td><span class="resource-tag">Payments</span></td>
+                      <td>Create a payment</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="get-payments-id" data-tag="Payments" data-method="GET" data-path="/v2/payments/{id}">
+                      <td><span class="method-badge method-get">GET</span></td>
+                      <td><code class="endpoint-path">/v2/payments/{id}</code></td>
+                      <td><span class="resource-tag">Payments</span></td>
+                      <td>Retrieve a payment</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-refunds-create" data-tag="Refunds" data-method="POST" data-path="/v2/refunds/create">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/refunds/create</code></td>
+                      <td><span class="resource-tag">Refunds</span></td>
+                      <td>Create a refund</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="get-customers-list" data-tag="Customers" data-method="GET" data-path="/v2/customers/list">
+                      <td><span class="method-badge method-get">GET</span></td>
+                      <td><code class="endpoint-path">/v2/customers/list</code></td>
+                      <td><span class="resource-tag">Customers</span></td>
+                      <td>List customers</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="put-customers-id" data-tag="Customers" data-method="PUT" data-path="/v2/customers/{id}">
+                      <td><span class="method-badge method-put">PUT</span></td>
+                      <td><code class="endpoint-path">/v2/customers/{id}</code></td>
+                      <td><span class="resource-tag">Customers</span></td>
+                      <td>Update a customer</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-subscriptions-create" data-tag="Subscriptions" data-method="POST" data-path="/v2/subscriptions/create">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/subscriptions/create</code></td>
+                      <td><span class="resource-tag">Subscriptions</span></td>
+                      <td>Create a subscription</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="delete-subscriptions-id" data-tag="Subscriptions" data-method="DELETE" data-path="/v2/subscriptions/{id}">
+                      <td><span class="method-badge method-delete">DELETE</span></td>
+                      <td><code class="endpoint-path">/v2/subscriptions/{id}</code></td>
+                      <td><span class="resource-tag">Subscriptions</span></td>
+                      <td>Cancel a subscription</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="get-webhooks-list" data-tag="Webhooks" data-method="GET" data-path="/v2/webhooks/list">
+                      <td><span class="method-badge method-get">GET</span></td>
+                      <td><code class="endpoint-path">/v2/webhooks/list</code></td>
+                      <td><span class="resource-tag">Webhooks</span></td>
+                      <td>List webhook endpoints</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="post-checkout-sessions" data-tag="Checkout" data-method="POST" data-path="/v2/checkout/sessions">
+                      <td><span class="method-badge method-post">POST</span></td>
+                      <td><code class="endpoint-path">/v2/checkout/sessions</code></td>
+                      <td><span class="resource-tag">Checkout</span></td>
+                      <td>Create checkout session</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                    <tr data-key="get-balance" data-tag="Balance" data-method="GET" data-path="/v2/balance">
+                      <td><span class="method-badge method-get">GET</span></td>
+                      <td><code class="endpoint-path">/v2/balance</code></td>
+                      <td><span class="resource-tag">Balance</span></td>
+                      <td>Retrieve account balance</td>
+                      <td><button type="button" class="btn-ghost btn-sm btn-try-row">Test</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="table-empty-state" class="empty-state" hidden>
+                No endpoints match the selected tag or search query.
+              </div>
+            </div>
+
+            <!-- Interactive API Playground -->
+            <div id="api-playground" class="playground-card" aria-label="Interactive API Test Console">
+              <div class="playground-topbar">
+                <div class="playground-endpoint-title">
+                  <span id="pg-method-badge" class="method-badge method-post">POST</span>
+                  <span id="pg-full-url" class="playground-url">https://api.novapay.dev/v2/payments/create</span>
+                  <span id="pg-tag-pill" class="resource-tag">Payments</span>
+                </div>
+                <div class="playground-actions">
+                  <button type="button" class="btn-ghost btn-sm" id="btn-copy-curl">Copy cURL</button>
+                  <button type="button" class="btn-primary" id="btn-send-request">Send Test Request</button>
+                </div>
+              </div>
+
+              <div class="playground-grid">
+                <!-- Request Builder -->
+                <div class="playground-pane">
+                  <div class="pane-heading">
+                    <h3>Request Builder</h3>
+                    <button type="button" class="btn-ghost btn-sm" id="btn-reset-body">Reset Defaults</button>
+                  </div>
+
+                  <div class="scenario-bar">
+                    <span class="scenario-label">Quick scenarios:</span>
+                    <button type="button" class="btn-ghost btn-sm" data-scenario="valid">Valid Request</button>
+                    <button type="button" class="btn-ghost btn-sm" data-scenario="unauth">Invalid Key (401)</button>
+                    <button type="button" class="btn-ghost btn-sm" data-scenario="notfound">Not Found (404)</button>
+                  </div>
+
+                  <div class="params-grid">
+                    <div class="field-group">
+                      <label class="field-label" for="pg-api-key">Authorization Bearer</label>
+                      <input id="pg-api-key" class="field-input" type="text" value="np_test_9f8a7c2e41b0" />
+                    </div>
+                    <div class="field-group" id="pg-path-param-wrap">
+                      <label class="field-label" for="pg-path-param">Path Param <code>{id}</code></label>
+                      <input id="pg-path-param" class="field-input" type="text" value="" />
+                    </div>
+                    <div class="field-group" id="pg-query-param-wrap">
+                      <label class="field-label" id="pg-query-param-label" for="pg-query-param">Query Param</label>
+                      <input id="pg-query-param" class="field-input" type="text" value="" />
+                    </div>
+                    <div class="field-group">
+                      <label class="field-label" for="pg-idempotency">Idempotency-Key</label>
+                      <input id="pg-idempotency" class="field-input" type="text" value="7d2f0c3a-4b11-4e92-a812" />
+                    </div>
+                  </div>
+
+                  <div class="field-group" id="pg-body-wrap">
+                    <label class="field-label" for="pg-body">
+                      <span>JSON Request Body</span>
+                      <button type="button" class="btn-ghost btn-sm" id="btn-format-json">Format JSON</button>
+                    </label>
+                    <textarea id="pg-body" class="field-textarea" spellcheck="false"></textarea>
+                  </div>
+
+                  <div class="field-group">
+                    <span class="field-label">Generated cURL</span>
+                    <div id="pg-curl-preview" class="curl-box"></div>
+                  </div>
+                </div>
+
+                <!-- Response Viewer -->
+                <div class="playground-pane">
+                  <div class="pane-heading">
+                    <h3>Response</h3>
+                    <button type="button" class="btn-ghost btn-sm" id="btn-copy-response">Copy JSON</button>
+                  </div>
+
+                  <div class="response-meta">
+                    <span id="pg-status-badge" class="http-status http-2xx">201 Created</span>
+                    <span id="pg-latency">41 ms</span>
+                    <span id="pg-ratelimit">X-RateLimit-Limit: 120/min</span>
+                  </div>
+
+                  <pre id="pg-response-body" class="response-pre"></pre>
+                </div>
+              </div>
+
+              <div class="history-bar">
+                <span class="scenario-label">Recent test calls (click to inspect):</span>
+                <div id="pg-history-items" class="history-items">
+                  <span style="color: var(--text-muted);">No calls yet — click "Send Test Request".</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="portal-section" aria-labelledby="changelog-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 id="changelog-heading">Changelog</h2>
+            <p>Chronological record of API releases, schema updates, deprecations, and breaking changes.</p>
+          </div>
+          <span class="pill-summary">Latest release: v2.14.0</span>
+        </div>
+
+        <div class="filter-toolbar">
+          <div id="changelog-tag-list" class="badge-legend" role="tablist" aria-label="Filter changelog by change type">
+            <button type="button" class="tag-btn is-active" data-cl-tag="all">All Changes <span class="tag-count">3</span></button>
+            <button type="button" class="tag-btn" data-cl-tag="breaking"><span class="change-badge badge-breaking">Breaking Change 🔴</span></button>
+            <button type="button" class="tag-btn" data-cl-tag="deprecation"><span class="change-badge badge-deprecation">Deprecation ⚠️</span></button>
+            <button type="button" class="tag-btn" data-cl-tag="new"><span class="change-badge badge-new">New ✅</span></button>
+            <button type="button" class="tag-btn" data-cl-tag="update"><span class="change-badge badge-update">Update 🔵</span></button>
+          </div>
+        </div>
+
+        <div class="changelog-timeline">
+          <article id="2026-11-20" class="changelog-entry" data-cl-type="new">
+            <div class="entry-meta">
+              <div class="entry-date-version">
+                <time class="entry-date" datetime="2026-11-20">2026-11-20</time>
+                <span class="entry-version">v2.14.0</span>
+                <span class="change-badge badge-new">New ✅</span>
+              </div>
+              <a class="entry-anchor" href="#2026-11-20">#2026-11-20</a>
+            </div>
+            <h3 class="entry-title">Hosted Checkout Sessions</h3>
+            <p class="entry-body">
+              Added <code>POST /v2/checkout/sessions</code> endpoint for hosted checkout pages.
+            </p>
+            <div class="entry-details">
+              <span>Supports <code>success_url</code>, <code>cancel_url</code>, and multi-currency line items.</span>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="post-checkout-sessions">Test in Sandbox</button>
+            </div>
+          </article>
+
+          <article id="2026-11-15" class="changelog-entry" data-cl-type="update">
+            <div class="entry-meta">
+              <div class="entry-date-version">
+                <time class="entry-date" datetime="2026-11-15">2026-11-15</time>
+                <span class="entry-version">v2.13.2</span>
+                <span class="change-badge badge-update">Update 🔵</span>
+              </div>
+              <a class="entry-anchor" href="#2026-11-15">#2026-11-15</a>
+            </div>
+            <h3 class="entry-title">Payment Retrieval Rate Limit Increase</h3>
+            <p class="entry-body">
+              Updated rate limits for <code>GET /v2/payments/{id}</code> from 100/min to 200/min.
+            </p>
+            <div class="entry-details">
+              <span>Reflected automatically in <code>X-RateLimit-Limit</code> response headers.</span>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="get-payments-id">Test in Sandbox</button>
+            </div>
+          </article>
+
+          <article id="2026-11-01" class="changelog-entry" data-cl-type="update">
+            <div class="entry-meta">
+              <div class="entry-date-version">
+                <time class="entry-date" datetime="2026-11-01">2026-11-01</time>
+                <span class="entry-version">v2.13.0</span>
+                <span class="change-badge badge-update">Update 🔵</span>
+              </div>
+              <a class="entry-anchor" href="#2026-11-01">#2026-11-01</a>
+            </div>
+            <h3 class="entry-title">Granular Account Balance Breakdown</h3>
+            <p class="entry-body">
+              The <code>GET /v2/balance</code> endpoint now returns <code>available_balance</code> and <code>pending_balance</code> fields separately.
+            </p>
+            <div class="entry-details">
+              <span>Both fields return integer minor units alongside ISO-4217 currency codes.</span>
+              <button type="button" class="btn-ghost btn-sm" data-try-endpoint="get-balance">Test in Sandbox</button>
+            </div>
+          </article>
+        </div>
+        <div id="changelog-empty-state" class="empty-state" hidden>
+          No changelog entries match the selected tag filter.
+        </div>
+      </div>
+    </section>
+
+    <!-- Status -->
+    <section id="status" class="portal-section" aria-labelledby="status-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 id="status-heading">Platform Status</h2>
+            <p>Real-time health across NovaPay core API services and webhook delivery pipelines.</p>
+          </div>
+          <span class="pill-summary">All Systems Operational</span>
+        </div>
+
+        <div class="status-grid">
+          <div class="status-card">
+            <div class="status-card-top">
+              <span class="status-name">Core Payments API</span>
+              <span class="status-state"><span class="status-dot" aria-hidden="true"></span>Operational</span>
+            </div>
+            <span class="status-uptime">99.99% uptime · 38ms p95</span>
+          </div>
+          <div class="status-card">
+            <div class="status-card-top">
+              <span class="status-name">Hosted Checkout</span>
+              <span class="status-state"><span class="status-dot" aria-hidden="true"></span>Operational</span>
+            </div>
+            <span class="status-uptime">99.99% uptime · 44ms p95</span>
+          </div>
+          <div class="status-card">
+            <div class="status-card-top">
+              <span class="status-name">Subscriptions Engine</span>
+              <span class="status-state"><span class="status-dot" aria-hidden="true"></span>Operational</span>
+            </div>
+            <span class="status-uptime">100.0% uptime · 52ms p95</span>
+          </div>
+          <div class="status-card">
+            <div class="status-card-top">
+              <span class="status-name">Webhook Dispatcher</span>
+              <span class="status-state"><span class="status-dot" aria-hidden="true"></span>Operational</span>
+            </div>
+            <span class="status-uptime">99.98% uptime · 120ms p95</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>&copy; 2026 NovaPay Inc. &mdash; API v2.14.0</span>
+      <div class="footer-links">
+        <a href="#/docs" data-route="/docs">Docs</a>
+        <a href="#/api-reference" data-route="/api-reference">API Reference</a>
+        <a href="#/changelog" data-route="/changelog">Changelog</a>
+        <a href="#/status" data-route="/status">Status</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const ENDPOINTS = [
+        {
+          key: "post-payments-create",
+          method: "POST",
+          path: "/v2/payments/create",
+          tag: "Payments",
+          description: "Create a payment",
+          rateLimit: "120/min",
+          hasBody: true,
+          defaultBody: {
+            amount: 4900,
+            currency: "USD",
+            customer_id: "cus_01J9XK2M",
+            description: "Order #1042",
+            capture: true
+          }
+        },
+        {
+          key: "get-payments-id",
+          method: "GET",
+          path: "/v2/payments/{id}",
+          tag: "Payments",
+          description: "Retrieve a payment",
+          rateLimit: "200/min",
+          hasBody: false,
+          pathParamDefault: "pay_01J9XMP8Q4"
+        },
+        {
+          key: "post-refunds-create",
+          method: "POST",
+          path: "/v2/refunds/create",
+          tag: "Refunds",
+          description: "Create a refund",
+          rateLimit: "60/min",
+          hasBody: true,
+          defaultBody: {
+            payment_id: "pay_01J9XMP8Q4",
+            amount: 1500,
+            reason: "requested_by_customer"
+          }
+        },
+        {
+          key: "get-customers-list",
+          method: "GET",
+          path: "/v2/customers/list",
+          tag: "Customers",
+          description: "List customers",
+          rateLimit: "120/min",
+          hasBody: false,
+          queryParamName: "limit",
+          queryParamDefault: "10"
+        },
+        {
+          key: "put-customers-id",
+          method: "PUT",
+          path: "/v2/customers/{id}",
+          tag: "Customers",
+          description: "Update a customer",
+          rateLimit: "90/min",
+          hasBody: true,
+          pathParamDefault: "cus_01J9XK2M",
+          defaultBody: {
+            name: "Elena Rostova",
+            email: "elena@acme.io",
+            metadata: { tier: "enterprise" }
+          }
+        },
+        {
+          key: "post-subscriptions-create",
+          method: "POST",
+          path: "/v2/subscriptions/create",
+          tag: "Subscriptions",
+          description: "Create a subscription",
+          rateLimit: "60/min",
+          hasBody: true,
+          defaultBody: {
+            customer_id: "cus_01J9XK2M",
+            plan_id: "plan_pro_monthly",
+            trial_days: 14
+          }
+        },
+        {
+          key: "delete-subscriptions-id",
+          method: "DELETE",
+          path: "/v2/subscriptions/{id}",
+          tag: "Subscriptions",
+          description: "Cancel a subscription",
+          rateLimit: "60/min",
+          hasBody: false,
+          pathParamDefault: "sub_01J9Z81A"
+        },
+        {
+          key: "get-webhooks-list",
+          method: "GET",
+          path: "/v2/webhooks/list",
+          tag: "Webhooks",
+          description: "List webhook endpoints",
+          rateLimit: "120/min",
+          hasBody: false,
+          queryParamName: "status",
+          queryParamDefault: "enabled"
+        },
+        {
+          key: "post-checkout-sessions",
+          method: "POST",
+          path: "/v2/checkout/sessions",
+          tag: "Checkout",
+          description: "Create checkout session",
+          rateLimit: "100/min",
+          hasBody: true,
+          defaultBody: {
+            mode: "payment",
+            success_url: "https://app.example.com/success",
+            cancel_url: "https://app.example.com/cancel",
+            line_items: [
+              { name: "Pro Plan", amount: 4900, currency: "USD", quantity: 1 }
+            ]
+          }
+        },
+        {
+          key: "get-balance",
+          method: "GET",
+          path: "/v2/balance",
+          tag: "Balance",
+          description: "Retrieve account balance",
+          rateLimit: "120/min",
+          hasBody: false
+        }
+      ];
+
+      function createInitialSandboxState() {
+        return {
+          payments: {
+            pay_01J9XMP8Q4: {
+              id: "pay_01J9XMP8Q4",
+              object: "payment",
+              amount: 4900,
+              refunded_amount: 0,
+              currency: "USD",
+              customer_id: "cus_01J9XK2M",
+              description: "Order #1042",
+              status: "succeeded",
+              created_at: "2026-11-20T14:10:00Z"
+            }
+          },
+          customers: {
+            cus_01J9XK2M: {
+              id: "cus_01J9XK2M",
+              object: "customer",
+              name: "Elena Rostova",
+              email: "elena@novapay-demo.io",
+              metadata: { tier: "growth" },
+              created_at: "2026-11-05T09:15:00Z"
+            },
+            cus_01J9YB7R: {
+              id: "cus_01J9YB7R",
+              object: "customer",
+              name: "Marco Silva",
+              email: "marco@fintechlab.dev",
+              metadata: { tier: "starter" },
+              created_at: "2026-11-12T17:42:00Z"
+            }
+          },
+          subscriptions: {
+            sub_01J9Z81A: {
+              id: "sub_01J9Z81A",
+              object: "subscription",
+              customer_id: "cus_01J9XK2M",
+              plan_id: "plan_pro_monthly",
+              status: "active",
+              trial_days: 14,
+              created_at: "2026-11-10T11:00:00Z"
+            }
+          },
+          webhooks: [
+            {
+              id: "wh_01J9W110",
+              url: "https://api.merchant.io/novapay/webhooks",
+              status: "enabled",
+              events: ["payment.succeeded", "refund.created", "checkout.session.completed"]
+            },
+            {
+              id: "wh_01J9W229",
+              url: "https://staging.merchant.io/hooks",
+              status: "disabled",
+              events: ["subscription.canceled"]
+            }
+          ],
+          refunds: {},
+          checkoutSessions: {},
+          balance: {
+            available_balance: 184500,
+            pending_balance: 12900,
+            currency: "USD"
+          }
+        };
+      }
+
+      let sandbox = createInitialSandboxState();
+      let activeEndpointKey = "post-payments-create";
+      let activeApiTag = "all";
+      let activeChangelogTag = "all";
+      let requestHistory = [];
+      let idSeq = 100;
+
+      const els = {
+        routeDisplay: document.getElementById("current-route-display"),
+        navLinks: document.querySelectorAll(".main-nav a[data-route]"),
+        sidebarContainer: document.getElementById("sidebar-routes-container"),
+        tableBody: document.getElementById("endpoints-table-body"),
+        tableEmpty: document.getElementById("table-empty-state"),
+        endpointCountPill: document.getElementById("endpoint-count-pill"),
+        apiTagList: document.getElementById("api-tag-list"),
+        endpointSearch: document.getElementById("endpoint-search"),
+        clTagList: document.getElementById("changelog-tag-list"),
+        clEntries: document.querySelectorAll(".changelog-entry"),
+        clEmpty: document.getElementById("changelog-empty-state"),
+        pgMethodBadge: document.getElementById("pg-method-badge"),
+        pgFullUrl: document.getElementById("pg-full-url"),
+        pgTagPill: document.getElementById("pg-tag-pill"),
+        pgApiKey: document.getElementById("pg-api-key"),
+        pgPathWrap: document.getElementById("pg-path-param-wrap"),
+        pgPathParam: document.getElementById("pg-path-param"),
+        pgQueryWrap: document.getElementById("pg-query-param-wrap"),
+        pgQueryLabel: document.getElementById("pg-query-param-label"),
+        pgQueryParam: document.getElementById("pg-query-param"),
+        pgIdempotency: document.getElementById("pg-idempotency"),
+        pgBodyWrap: document.getElementById("pg-body-wrap"),
+        pgBody: document.getElementById("pg-body"),
+        pgCurlPreview: document.getElementById("pg-curl-preview"),
+        pgStatusBadge: document.getElementById("pg-status-badge"),
+        pgLatency: document.getElementById("pg-latency"),
+        pgRateLimit: document.getElementById("pg-ratelimit"),
+        pgResponseBody: document.getElementById("pg-response-body"),
+        pgHistoryItems: document.getElementById("pg-history-items")
+      };
+
+      function getEndpoint(key) {
+        return ENDPOINTS.find((ep) => ep.key === key) || ENDPOINTS[0];
+      }
+
+      function methodClass(method) {
+        return "method-" + method.toLowerCase();
+      }
+
+      function renderSidebar() {
+        const grouped = {};
+        ENDPOINTS.forEach((ep) => {
+          if (!grouped[ep.tag]) grouped[ep.tag] = [];
+          grouped[ep.tag].push(ep);
+        });
+
+        let html = "";
+        Object.keys(grouped).forEach((tag) => {
+          html += `<div class="sidebar-group">`;
+          html += `<div class="sidebar-group-title"><span>${tag}</span><span>${grouped[tag].length}</span></div>`;
+          grouped[tag].forEach((ep) => {
+            const isActive = ep.key === activeEndpointKey ? "is-active" : "";
+            html += `<button type="button" class="sidebar-route-link ${isActive}" data-key="${ep.key}">`;
+            html += `<span class="mini-method ${methodClass(ep.method)}">${ep.method}</span>`;
+            html += `<span class="sidebar-route-path">${ep.path}</span>`;
+            html += `</button>`;
+          });
+          html += `</div>`;
+        });
+        els.sidebarContainer.innerHTML = html;
+
+        els.sidebarContainer.querySelectorAll(".sidebar-route-link").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            selectEndpoint(btn.dataset.key, { scrollToPlayground: true, updateHash: true });
+          });
+        });
+      }
+
+      function applyApiFilters() {
+        const q = (els.endpointSearch.value || "").trim().toLowerCase();
+        const rows = Array.from(els.tableBody.querySelectorAll("tr"));
+        let visible = 0;
+
+        rows.forEach((row) => {
+          const tagMatch = activeApiTag === "all" || row.dataset.tag === activeApiTag;
+          const text = (row.dataset.method + " " + row.dataset.path + " " + row.dataset.tag + " " + row.textContent).toLowerCase();
+          const queryMatch = !q || text.includes(q);
+          const show = tagMatch && queryMatch;
+          row.classList.toggle("is-hidden", !show);
+          if (show) visible++;
+        });
+
+        els.tableEmpty.hidden = visible > 0;
+        els.endpointCountPill.textContent = `${visible} of ${rows.length} endpoints`;
+      }
+
+      function setApiTag(tag, updateHash) {
+        activeApiTag = tag;
+        els.apiTagList.querySelectorAll(".tag-btn").forEach((btn) => {
+          btn.classList.toggle("is-active", btn.dataset.tag === tag);
+        });
+        applyApiFilters();
+        if (updateHash) {
+          const route = tag === "all" ? "#/api-reference" : `#/api-reference/tag/${tag.toLowerCase()}`;
+          setRouteDisplay(route, true);
+        }
+      }
+
+      function setChangelogTag(clTag, updateHash) {
+        activeChangelogTag = clTag;
+        els.clTagList.querySelectorAll(".tag-btn").forEach((btn) => {
+          btn.classList.toggle("is-active", btn.dataset.clTag === clTag);
+        });
+
+        let visible = 0;
+        els.clEntries.forEach((entry) => {
+          const show = clTag === "all" || entry.dataset.clType === clTag;
+          entry.classList.toggle("is-hidden", !show);
+          if (show) visible++;
+        });
+        els.clEmpty.hidden = visible > 0;
+
+        if (updateHash) {
+          const route = clTag === "all" ? "#/changelog" : `#/changelog/tag/${clTag}`;
+          setRouteDisplay(route, true);
+        }
+      }
+
+      function buildRequestUrl(ep) {
+        let resolvedPath = ep.path;
+        if (resolvedPath.includes("{id}")) {
+          const idVal = encodeURIComponent((els.pgPathParam.value || "").trim() || "{id}");
+          resolvedPath = resolvedPath.replace("{id}", idVal);
+        }
+        let url = "https://api.novapay.dev" + resolvedPath;
+        if (ep.queryParamName) {
+          const qv = (els.pgQueryParam.value || "").trim();
+          if (qv) {
+            url += `?${ep.queryParamName}=${encodeURIComponent(qv)}`;
+          }
+        }
+        return url;
+      }
+
+      function updateCurlPreview() {
+        const ep = getEndpoint(activeEndpointKey);
+        const url = buildRequestUrl(ep);
+        els.pgFullUrl.textContent = url;
+
+        const apiKey = (els.pgApiKey.value || "").trim() || "<missing>";
+        const lines = [
+          `curl -X ${ep.method} "${url}" \\`,
+          `  -H "Authorization: Bearer ${apiKey}"`
+        ];
+        if (ep.hasBody) {
+          lines[lines.length - 1] += " \\";
+          lines.push(`  -H "Content-Type: application/json" \\`);
+          if ((els.pgIdempotency.value || "").trim()) {
+            lines.push(`  -H "Idempotency-Key: ${els.pgIdempotency.value.trim()}" \\`);
+          }
+          lines.push(`  -d '${els.pgBody.value.trim() || "{}"}'`);
+        }
+        els.pgCurlPreview.textContent = lines.join("\n");
+      }
+
+      function selectEndpoint(key, opts = {}) {
+        const ep = getEndpoint(key);
+        activeEndpointKey = ep.key;
+
+        els.tableBody.querySelectorAll("tr").forEach((r) => {
+          r.classList.toggle("is-selected", r.dataset.key === ep.key);
+        });
+        renderSidebar();
+
+        els.pgMethodBadge.textContent = ep.method;
+        els.pgMethodBadge.className = "method-badge " + methodClass(ep.method);
+        els.pgTagPill.textContent = ep.tag;
+
+        const hasPathId = ep.path.includes("{id}");
+        els.pgPathWrap.hidden = !hasPathId;
+        els.pgPathParam.value = ep.pathParamDefault || "";
+
+        els.pgQueryWrap.hidden = !ep.queryParamName;
+        if (ep.queryParamName) {
+          els.pgQueryLabel.textContent = `Query Param (${ep.queryParamName})`;
+          els.pgQueryParam.value = ep.queryParamDefault || "";
+        } else {
+          els.pgQueryParam.value = "";
+        }
+
+        els.pgBodyWrap.hidden = !ep.hasBody;
+        els.pgBody.value = ep.hasBody ? JSON.stringify(ep.defaultBody, null, 2) : "";
+
+        updateCurlPreview();
+        executeRequest({ recordHistory: false });
+
+        if (opts.updateHash) {
+          setRouteDisplay(`#/endpoint/${ep.key}`, true);
+        }
+        if (opts.scrollToPlayground) {
+          document.getElementById("api-playground").scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }
+
+      function executeRequest(opts = { recordHistory: true }) {
+        const ep = getEndpoint(activeEndpointKey);
+        const start = performance.now();
+        const apiKey = (els.pgApiKey.value || "").trim();
+        const pathId = (els.pgPathParam.value || "").trim();
+        const queryVal = (els.pgQueryParam.value || "").trim();
+
+        let status = 200;
+        let statusText = "OK";
+        let payload = null;
+
+        if (!apiKey || !apiKey.startsWith("np_")) {
+          status = 401;
+          statusText = "Unauthorized";
+          payload = {
+            error: {
+              type: "authentication_error",
+              code: "invalid_api_key",
+              message: "Invalid or missing Bearer API key. Expected prefix 'np_test_' or 'np_live_'."
+            }
+          };
+        } else {
+          let bodyObj = null;
+          if (ep.hasBody) {
+            try {
+              bodyObj = JSON.parse(els.pgBody.value || "{}");
+            } catch (err) {
+              status = 400;
+              statusText = "Bad Request";
+              payload = {
+                error: {
+                  type: "invalid_request_error",
+                  code: "malformed_json",
+                  message: err.message
+                }
+              };
+            }
+          }
+
+          if (!payload) {
+            switch (ep.key) {
+              case "post-payments-create": {
+                const amt = Number(bodyObj.amount);
+                if (!Number.isInteger(amt) || amt <= 0) {
+                  status = 400;
+                  statusText = "Bad Request";
+                  payload = { error: { type: "invalid_request_error", code: "invalid_amount", message: "amount must be a positive integer in minor units." } };
+                  break;
+                }
+                idSeq++;
+                const newId = `pay_01J9SANDBOX${idSeq}`;
+                const captured = bodyObj.capture !== false;
+                const rec = {
+                  id: newId,
+                  object: "payment",
+                  amount: amt,
+                  refunded_amount: 0,
+                  currency: (bodyObj.currency || "USD").toUpperCase(),
+                  customer_id: bodyObj.customer_id || "cus_01J9XK2M",
+                  description: bodyObj.description || null,
+                  status: captured ? "succeeded" : "requires_capture",
+                  created_at: new Date().toISOString()
+                };
+                sandbox.payments[newId] = rec;
+                if (captured) sandbox.balance.available_balance += amt;
+                else sandbox.balance.pending_balance += amt;
+                status = 201;
+                statusText = "Created";
+                payload = rec;
+                break;
+              }
+              case "get-payments-id": {
+                const item = sandbox.payments[pathId];
+                if (!item) {
+                  status = 404;
+                  statusText = "Not Found";
+                  payload = { error: { type: "invalid_request_error", code: "resource_missing", message: `No such payment: '${pathId}'` } };
+                } else {
+                  payload = item;
+                }
+                break;
+              }
+              case "post-refunds-create": {
+                const pay = sandbox.payments[bodyObj.payment_id];
+                if (!pay) {
+                  status = 404;
+                  statusText = "Not Found";
+                  payload = { error: { type: "invalid_request_error", code: "resource_missing", message: `No such payment: '${bodyObj.payment_id}'` } };
+                  break;
+                }
+                const refAmt = Number(bodyObj.amount || pay.amount);
+                if (refAmt <= 0 || pay.refunded_amount + refAmt > pay.amount) {
+                  status = 400;
+                  statusText = "Bad Request";
+                  payload = { error: { type: "invalid_request_error", code: "charge_already_refunded", message: "Refund amount exceeds remaining payment balance." } };
+                  break;
+                }
+                idSeq++;
+                const refId = `ref_01J9REF${idSeq}`;
+                pay.refunded_amount += refAmt;
+                sandbox.balance.available_balance = Math.max(0, sandbox.balance.available_balance - refAmt);
+                const refObj = {
+                  id: refId,
+                  object: "refund",
+                  payment_id: pay.id,
+                  amount: refAmt,
+                  currency: pay.currency,
+                  reason: bodyObj.reason || "requested_by_customer",
+                  status: "succeeded",
+                  created_at: new Date().toISOString()
+                };
+                sandbox.refunds[refId] = refObj;
+                status = 201;
+                statusText = "Created";
+                payload = refObj;
+                break;
+              }
+              case "get-customers-list": {
+                const limit = Math.max(1, Math.min(100, parseInt(queryVal || "10", 10) || 10));
+                const list = Object.values(sandbox.customers).slice(0, limit);
+                payload = {
+                  object: "list",
+                  data: list,
+                  has_more: Object.values(sandbox.customers).length > limit,
+                  total_count: Object.values(sandbox.customers).length
+                };
+                break;
+              }
+              case "put-customers-id": {
+                const cust = sandbox.customers[pathId];
+                if (!cust) {
+                  status = 404;
+                  statusText = "Not Found";
+                  payload = { error: { type: "invalid_request_error", code: "resource_missing", message: `No such customer: '${pathId}'` } };
+                  break;
+                }
+                if (bodyObj.name) cust.name = bodyObj.name;
+                if (bodyObj.email) cust.email = bodyObj.email;
+                if (bodyObj.metadata) cust.metadata = Object.assign({}, cust.metadata, bodyObj.metadata);
+                cust.updated_at = new Date().toISOString();
+                payload = cust;
+                break;
+              }
+              case "post-subscriptions-create": {
+                idSeq++;
+                const subId = `sub_01J9SUB${idSeq}`;
+                const sub = {
+                  id: subId,
+                  object: "subscription",
+                  customer_id: bodyObj.customer_id || "cus_01J9XK2M",
+                  plan_id: bodyObj.plan_id || "plan_pro_monthly",
+                  status: bodyObj.trial_days ? "trialing" : "active",
+                  trial_days: Number(bodyObj.trial_days || 0),
+                  created_at: new Date().toISOString()
+                };
+                sandbox.subscriptions[subId] = sub;
+                status = 201;
+                statusText = "Created";
+                payload = sub;
+                break;
+              }
+              case "delete-subscriptions-id": {
+                const sub = sandbox.subscriptions[pathId];
+                if (!sub) {
+                  status = 404;
+                  statusText = "Not Found";
+                  payload = { error: { type: "invalid_request_error", code: "resource_missing", message: `No such subscription: '${pathId}'` } };
+                  break;
+                }
+                sub.status = "canceled";
+                sub.canceled_at = new Date().toISOString();
+                payload = sub;
+                break;
+              }
+              case "get-webhooks-list": {
+                const filtered = queryVal && queryVal !== "all"
+                  ? sandbox.webhooks.filter((w) => w.status === queryVal)
+                  : sandbox.webhooks;
+                payload = {
+                  object: "list",
+                  data: filtered,
+                  total_count: filtered.length
+                };
+                break;
+              }
+              case "post-checkout-sessions": {
+                idSeq++;
+                const csId = `cs_test_01J9CHK${idSeq}`;
+                const items = Array.isArray(bodyObj.line_items) ? bodyObj.line_items : [];
+                const total = items.reduce((sum, item) => sum + (Number(item.amount || 0) * Number(item.quantity || 1)), 0);
+                const session = {
+                  id: csId,
+                  object: "checkout.session",
+                  mode: bodyObj.mode || "payment",
+                  amount_total: total,
+                  currency: (items[0] && items[0].currency) || "USD",
+                  url: `https://checkout.novapay.dev/c/pay/${csId}`,
+                  success_url: bodyObj.success_url || "https://app.example.com/success",
+                  cancel_url: bodyObj.cancel_url || "https://app.example.com/cancel",
+                  status: "open",
+                  expires_at: new Date(Date.now() + 3600 * 1000).toISOString()
+                };
+                sandbox.checkoutSessions[csId] = session;
+                status = 201;
+                statusText = "Created";
+                payload = session;
+                break;
+              }
+              case "get-balance": {
+                payload = {
+                  object: "balance",
+                  available_balance: {
+                    amount: sandbox.balance.available_balance,
+                    currency: sandbox.balance.currency
+                  },
+                  pending_balance: {
+                    amount: sandbox.balance.pending_balance,
+                    currency: sandbox.balance.currency
+                  },
+                  updated_at: new Date().toISOString()
+                };
+                break;
+              }
+            }
+          }
+        }
+
+        const elapsed = Math.max(12, Math.round(performance.now() - start + 24));
+        els.pgStatusBadge.textContent = `${status} ${statusText}`;
+        els.pgStatusBadge.className = "http-status " + (status < 400 ? "http-2xx" : "http-4xx");
+        els.pgLatency.textContent = `${elapsed} ms`;
+        els.pgRateLimit.textContent = `X-RateLimit-Limit: ${ep.rateLimit}`;
+        els.pgResponseBody.textContent = JSON.stringify(payload, null, 2);
+
+        if (opts.recordHistory) {
+          requestHistory.unshift({
+            key: ep.key,
+            method: ep.method,
+            path: buildRequestUrl(ep).replace("https://api.novapay.dev", ""),
+            status: status,
+            response: payload
+          });
+          requestHistory = requestHistory.slice(0, 5);
+          renderHistory();
+        }
+      }
+
+      function renderHistory() {
+        if (!requestHistory.length) return;
+        els.pgHistoryItems.innerHTML = requestHistory.map((item, idx) => {
+          const color = item.status < 400 ? "var(--method-get-fg)" : "var(--method-delete-fg)";
+          return `<button type="button" class="history-chip" data-idx="${idx}">
+            <span style="color:${color};font-weight:700;">${item.status}</span>
+            <span>${item.method} ${item.path}</span>
+          </button>`;
+        }).join("");
+
+        els.pgHistoryItems.querySelectorAll(".history-chip").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            const h = requestHistory[Number(chip.dataset.idx)];
+            if (!h) return;
+            selectEndpoint(h.key, { scrollToPlayground: false, updateHash: false });
+            els.pgStatusBadge.textContent = `${h.status}`;
+            els.pgStatusBadge.className = "http-status " + (h.status < 400 ? "http-2xx" : "http-4xx");
+            els.pgResponseBody.textContent = JSON.stringify(h.response, null, 2);
+          });
+        });
+      }
+
+      function setRouteDisplay(hashValue, pushState) {
+        els.routeDisplay.textContent = hashValue;
+        if (pushState && window.location.hash !== hashValue) {
+          history.replaceState(null, "", hashValue);
+        }
+
+        let navTarget = "/docs";
+        if (hashValue.startsWith("#/api-reference") || hashValue.startsWith("#/endpoint")) navTarget = "/api-reference";
+        else if (hashValue.startsWith("#/changelog")) navTarget = "/changelog";
+        else if (hashValue.startsWith("#/status")) navTarget = "/status";
+
+        els.navLinks.forEach((a) => {
+          a.classList.toggle("is-active", a.dataset.route === navTarget);
+        });
+      }
+
+      function handleRouteHash() {
+        const hash = window.location.hash || "#/docs";
+        if (!hash.startsWith("#/")) {
+          // Preserve direct anchor navigation like #2026-11-20 or #api-reference
+          setRouteDisplay(hash, false);
+          return;
+        }
+        setRouteDisplay(hash, false);
+        const parts = hash.slice(2).split("/");
+        const root = parts[0];
+
+        if (root === "docs") {
+          document.getElementById("docs").scrollIntoView({ behavior: "smooth" });
+        } else if (root === "api-reference") {
+          if (parts[1] === "tag" && parts[2]) {
+            const matched = ENDPOINTS.find((e) => e.tag.toLowerCase() === parts[2].toLowerCase());
+            setApiTag(matched ? matched.tag : "all", false);
+          } else {
+            setApiTag("all", false);
+          }
+          document.getElementById("api-reference").scrollIntoView({ behavior: "smooth" });
+        } else if (root === "endpoint" && parts[1]) {
+          selectEndpoint(parts[1], { scrollToPlayground: true, updateHash: false });
+        } else if (root === "changelog") {
+          if (parts[1] === "tag" && parts[2]) {
+            setChangelogTag(parts[2].toLowerCase(), false);
+          } else {
+            setChangelogTag("all", false);
+          }
+          document.getElementById("changelog").scrollIntoView({ behavior: "smooth" });
+        } else if (root === "status") {
+          document.getElementById("status").scrollIntoView({ behavior: "smooth" });
+        }
+      }
+
+      // Event Bindings
+      els.tableBody.querySelectorAll("tr").forEach((row) => {
+        row.addEventListener("click", () => {
+          selectEndpoint(row.dataset.key, { scrollToPlayground: true, updateHash: true });
+        });
+      });
+
+      els.apiTagList.querySelectorAll(".tag-btn").forEach((btn) => {
+        btn.addEventListener("click", () => setApiTag(btn.dataset.tag, true));
+      });
+
+      els.endpointSearch.addEventListener("input", applyApiFilters);
+
+      els.clTagList.querySelectorAll(".tag-btn").forEach((btn) => {
+        btn.addEventListener("click", () => setChangelogTag(btn.dataset.clTag, true));
+      });
+
+      document.querySelectorAll("[data-try-endpoint]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectEndpoint(btn.dataset.tryEndpoint, { scrollToPlayground: true, updateHash: true });
+        });
+      });
+
+      document.querySelectorAll("[data-scenario]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const ep = getEndpoint(activeEndpointKey);
+          const sc = btn.dataset.scenario;
+          if (sc === "valid") {
+            els.pgApiKey.value = "np_test_9f8a7c2e41b0";
+            if (ep.pathParamDefault) els.pgPathParam.value = ep.pathParamDefault;
+            if (ep.hasBody) els.pgBody.value = JSON.stringify(ep.defaultBody, null, 2);
+          } else if (sc === "unauth") {
+            els.pgApiKey.value = "invalid_key_000";
+          } else if (sc === "notfound") {
+            els.pgApiKey.value = "np_test_9f8a7c2e41b0";
+            if (ep.path.includes("{id}")) {
+              els.pgPathParam.value = "nonexistent_id_999";
+            } else if (ep.key === "post-refunds-create") {
+              els.pgBody.value = JSON.stringify({ payment_id: "pay_missing_999", amount: 500 }, null, 2);
+            } else {
+              selectEndpoint("get-payments-id", { scrollToPlayground: false, updateHash: false });
+              els.pgPathParam.value = "pay_missing_999";
+            }
+          }
+          updateCurlPreview();
+          executeRequest({ recordHistory: true });
+        });
+      });
+
+      [els.pgApiKey, els.pgPathParam, els.pgQueryParam, els.pgIdempotency, els.pgBody].forEach((input) => {
+        input.addEventListener("input", updateCurlPreview);
+      });
+
+      document.getElementById("btn-send-request").addEventListener("click", () => {
+        executeRequest({ recordHistory: true });
+      });
+
+      document.getElementById("btn-reset-body").addEventListener("click", () => {
+        selectEndpoint(activeEndpointKey, { scrollToPlayground: false, updateHash: false });
+      });
+
+      document.getElementById("btn-format-json").addEventListener("click", () => {
+        try {
+          els.pgBody.value = JSON.stringify(JSON.parse(els.pgBody.value), null, 2);
+          updateCurlPreview();
+        } catch (err) {
+          els.pgStatusBadge.textContent = "400 Bad Request";
+          els.pgStatusBadge.className = "http-status http-4xx";
+          els.pgResponseBody.textContent = JSON.stringify({ error: { code: "malformed_json", message: err.message } }, null, 2);
+        }
+      });
+
+      document.getElementById("btn-copy-curl").addEventListener("click", (e) => {
+        if (navigator.clipboard) navigator.clipboard.writeText(els.pgCurlPreview.textContent);
+        const orig = e.target.textContent;
+        e.target.textContent = "Copied!";
+        setTimeout(() => { e.target.textContent = orig; }, 1200);
+      });
+
+      document.getElementById("btn-copy-response").addEventListener("click", (e) => {
+        if (navigator.clipboard) navigator.clipboard.writeText(els.pgResponseBody.textContent);
+        const orig = e.target.textContent;
+        e.target.textContent = "Copied!";
+        setTimeout(() => { e.target.textContent = orig; }, 1200);
+      });
+
+      document.getElementById("btn-jump-tester").addEventListener("click", () => {
+        document.getElementById("api-playground").scrollIntoView({ behavior: "smooth" });
+      });
+
+      document.getElementById("btn-quickstart-try").addEventListener("click", () => {
+        selectEndpoint("post-payments-create", { scrollToPlayground: true, updateHash: true });
+      });
+
+      document.getElementById("btn-reset-sandbox").addEventListener("click", (e) => {
+        sandbox = createInitialSandboxState();
+        requestHistory = [];
+        els.pgHistoryItems.innerHTML = '<span style="color: var(--text-muted);">Sandbox reset — click "Send Test Request".</span>';
+        executeRequest({ recordHistory: false });
+        const orig = e.target.textContent;
+        e.target.textContent = "Sandbox Reset ✓";
+        setTimeout(() => { e.target.textContent = orig; }, 1400);
+      });
+
+      window.addEventListener("hashchange", handleRouteHash);
+
+      // Initialize
+      renderSidebar();
+      selectEndpoint("post-payments-create", { scrollToPlayground: false, updateHash: false });
+      if (window.location.hash) {
+        handleRouteHash();
+      }
+    })();
+  </script>
+</body>
+</html>
